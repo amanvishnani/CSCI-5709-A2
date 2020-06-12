@@ -1,26 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import OfferCard from '../../components/OfferCard';
 import './Landing.css'
 import Grid from '@material-ui/core/Grid';
+import { Snackbar } from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
+import { getAllProducts } from "../../service/ProductService";
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 function Landing() {
 
-    let products = [{
-        id: 1,
-        title: "Gorgeous Indoor Plant",
-        description: "Monstera may be the perfect houseplant for you if you're looking to create a big, bold, tropical feel in your home. While young, this houseplant has a dense, bushy shape, but as it grows, it wants to vine out. You can keep it bushy with regular pruning or let it climb up a vertical support (such as fishing line fastened into the ceiling), for a decidedly bold and tropical look.",
-        image: "https://m.media-amazon.com/images/I/81hN56ywm2L._SR500,500_.jpg",
-        salePrice: "$19.99",
-        actualPrice: "$49.99"
-    }, {
-        id: 2,
-        title: "Gorgeous Indoor Plant",
-        description: "Monstera may be the perfect houseplant for you if you're looking to create a big, bold, tropical feel in your home. While young, this houseplant has a dense, bushy shape, but as it grows, it wants to vine out. You can keep it bushy with regular pruning or let it climb up a vertical support (such as fishing line fastened into the ceiling), for a decidedly bold and tropical look.",
-        image: "https://m.media-amazon.com/images/I/81hN56ywm2L._SR500,500_.jpg",
-        salePrice: "$19.99",
-        actualPrice: "$49.99"
-    }]
+    const [products, setProducts] = useState([])
+    const [productFlag, setProductFlag] = useState(false)
+    const [open, setOpen] = useState(false)
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    useEffect(() => {
+        async function init() {
+            if (products.length === 0) {
+                setProducts(await getAllProducts())
+            }
+            setProductFlag(true)
+        }
+        init()
+        return () => {
+
+        }
+    }, [productFlag, products.length])
 
     return (
         <div>
@@ -28,14 +44,20 @@ function Landing() {
             <div className="Landing-root">
                 <Grid container spacing={3}>
                     {
-                    products.map(product => 
-                        <Grid item xs={12} sm={6} key={product.id} >
-                            <OfferCard product={product} /> 
-                        </Grid>
-                    )
+                        products.map(product =>
+                            <Grid item xs={12} sm={6} key={product.id} onClick={()=>setOpen(true)} >
+                                <OfferCard product={product} />
+                            </Grid>
+                        )
                     }
                 </Grid>
             </div>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="info">
+                    Product Detail Page feature not implimented! <br/>
+                    Quick Buy feature is implimented!
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

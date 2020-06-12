@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import './App.css';
 
 import Landing from "./pages/Landing/Landing";
@@ -10,20 +10,30 @@ import {
   Route
 } from "react-router-dom";
 import OrderSummary from './pages/OrderSummary/OrderSummary';
+import { OrderContext } from "./contexts/OrderContext";
+import Payment from './pages/Payment/Payment';
 
 function App() {
+
+  const [order, setOrder] = useState({})
+  const orderState = useMemo(() => ({ order, setOrder }), [order, setOrder]);
   return (
     <div className="App">
-      <Header />
       <Router>
-        <Switch>
-          <Route path="/quick-buy/:productId">
-            <OrderSummary />
-          </Route>
-          <Route path="/">
-            <Landing />
-          </Route>
-        </Switch>
+        <OrderContext.Provider value={orderState}>
+          <Header />
+          <Switch>
+            <Router path="/payment">
+              <Payment />
+            </Router>
+            <Route path="/quick-buy/:productId">
+              <OrderSummary />
+            </Route>
+            <Route path="/">
+              <Landing />
+            </Route>
+          </Switch>
+        </OrderContext.Provider>
       </Router>
     </div>
   );

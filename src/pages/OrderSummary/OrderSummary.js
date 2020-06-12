@@ -1,13 +1,18 @@
 import SummaryItem from "../../components/SummaryItem";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { getProductById } from "../../service/ProductService";
-import { useParams } from "react-router-dom";
+import { getAllAddresses } from "../../service/AddressService";
+import { useParams, Redirect } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import { Typography, Button, CardContent, Card, CardActionArea } from "@material-ui/core";
+import { Typography, Button, LinearProgress } from "@material-ui/core";
+import AddressCard from "../../components/AddressCard";
+import { OrderContext } from "../../contexts/OrderContext";
 
 
 function OrderSummary(props) {
+
+    let { productId } = useParams()
 
     const [product, setProduct] = useState({
         id: -1,
@@ -17,19 +22,34 @@ function OrderSummary(props) {
         salePrice: "",
         actualPrice: ""
     })
-    let { productId } = useParams()
-    const [total, setTotal] = useState(0)
+    const [addresses, setAddresses] = useState([])
+    const [selectedAddr, setSelectedAddr] = useState(-1)
+    const [redirect, setRedirect] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [orderSummary, setOrderSummary] = useState({
+        productSummaries: [],
+        total: 0
+    })
 
-    async function loadProductDetails(id) {
+    const { setOrder } = useContext(OrderContext)
+
+    async function loadDetails(id) {
         let product = await getProductById(id)
         console.log("Details fetched")
         setProduct(product)
-        setTotal(parseFloat(product.salePrice.substr(1,)))
+        setOrderSummary({
+            total: parseFloat(product.salePrice.substr(1,))
+        });
+        let userAddresses = await getAllAddresses();
+        setAddresses(userAddresses);
+        if (userAddresses.length > 0) {
+            setSelectedAddr(userAddresses[0].id)
+        }
     }
 
     useEffect(() => {
         if (product.id === -1) {
-            loadProductDetails(productId)
+            loadDetails(productId)
         }
         console.log("Effect called")
         return () => {
@@ -37,48 +57,64 @@ function OrderSummary(props) {
         }
     }, [product.id, productId])
 
-    function handleQuantityChange(productSummary) {
-        setTotal(productSummary.orderTotal)
+    function handlePayNow() {
+        if(loading) {
+            return;
+        }
+        setLoading(true)
+        setOrder({
+            addressId: selectedAddr,
+            orderSummary: orderSummary
+        })
+        setTimeout(() => {
+            setRedirect('/payment')
+        }, 1000);
     }
 
+    function handleQuantityChange(productSummary) {
+        setOrderSummary({
+            productSummaries: [productSummary], // Only 1 product for easy checkout
+            total: productSummary.orderTotal // Total cost = quantity x salePrice (1 product)
+        })
+    }
 
+    if (redirect) {
+        return <Redirect to={redirect} />
+    }
     return (
-        <div style={{ margin: "40px" }}>
-            <h1>Order Summary</h1>
-            {product.id === -1 ? <span>Loading</span> : <SummaryItem quantityChange={(productSummary) => handleQuantityChange(productSummary)} product={product}></SummaryItem>}
-            <br />
-            <Divider />
-            <Typography variant="h4" style={{ marginTop: "20px" }}> Address </Typography>
-            <Grid item md={4} xs={12} style={{ marginTop: "20px" }}>
-                <Card>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography variant="h6" align="left">Aman Vishnani</Typography> <br />
-                            <Typography variant="body1" align="left" title="address">
-                                2990  Harron Drive, Cockeysville, Maryland, 21030
-                        </Typography>
-                            <Typography align="left" variant="subtitle1">
-                                Mobile: 410-430-0955
-                        </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </Grid>
-            <br />
-            <Divider />
-            <Grid container justify={"flex-end"} style={{ marginTop: "20px" }}>
-                <Grid item xs={6} md={2}>
-                    <Typography variant="h6">Total</Typography>
+        <div>
+            { loading && <LinearProgress color="secondary" />}
+            <div style={{ margin: "40px" }}>
+                <h1>Order Summary</h1>
+                {product.id === -1 ? <span>Loading</span> : <SummaryItem quantityChange={(productSummary) => handleQuantityChange(productSummary)} product={product}></SummaryItem>}
+                <br />
+                <Divider />
+                <Typography variant="h5" style={{ marginTop: "20px" }}> Choose Address for Dilevery</Typography>
+                <Grid container spacing={2}>
+                    {addresses.map(
+                        (addr, idx) =>
+                            <Grid key={addr.id} item md={4} xs={12}
+                                style={{ marginTop: "20px" }} onClick={() => setSelectedAddr(addr.id)}>
+                                <AddressCard selectedId={selectedAddr} address={addr} />
+                            </Grid>
+                    )}
                 </Grid>
-                <Grid item xs={6} md={2}>
-                    <Typography variant="h6">$ {total}</Typography>
+                <br />
+                <Divider />
+                <Grid container justify={"flex-end"} style={{ marginTop: "20px" }}>
+                    <Grid item xs={6} md={1}>
+                        <Typography variant="h6">Total</Typography>
+                    </Grid>
+                    <Grid item xs={6} md={1}>
+                        <Typography variant="h6">$ {orderSummary.total}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <Button disabled={loading} variant="contained" color="primary" onClick={handlePayNow}>
+                            Pay Now
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={2}>
-                    <Button variant="contained" color="primary">
-                        Pay Now
-                    </Button>
-                </Grid>
-            </Grid>
+            </div>
         </div>
     );
 }

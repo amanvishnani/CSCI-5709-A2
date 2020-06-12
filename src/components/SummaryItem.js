@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -10,7 +10,7 @@ import Grid from "@material-ui/core/Grid";
 
 export default function SummaryItem(props) {
     let product = props.product;
-    let [quantity, setQuantity] = useState(1);
+    let [quantity, setQuantity] = useState(-1);
     const [total, setTotal] = useState(product.salePrice.substr(1,))
     function handleChange(quantity) {
         if(props.quantityChange) {
@@ -18,14 +18,25 @@ export default function SummaryItem(props) {
             let total = (quantity * price).toFixed(2)
             setTotal(total)
             let productSummary = {
-                id: product.id,
                 price: price,
-                orderTotal: total
+                orderTotal: total,
+                ...product,
+                quantity
             }
             props.quantityChange(productSummary);
         }
         setQuantity(quantity)
     }
+
+    useEffect(() => {
+        if(quantity === -1) {
+            handleChange(1);
+        }
+        return () => {
+            
+        }
+    })
+
     return (
         <div>
             <Card>
