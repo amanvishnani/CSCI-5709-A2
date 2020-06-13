@@ -43,8 +43,18 @@ async function saveOrUpdateAddress(address) {
     return address;
 }
 
+async function deleteAddressById(addressId) {
+    if(!addressId) {
+        return
+    } else {
+        delete addresses[addressId];
+    }
+    return;
+}
+
 export {
     getAllAddresses,
     getAddressById,
-    saveOrUpdateAddress
+    saveOrUpdateAddress,
+    deleteAddressById
 }

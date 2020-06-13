@@ -10,8 +10,11 @@ function PastOrders(props) {
 
     return (
         <div>
+            <Typography variant="h5" align="left" style={{
+                marginBottom: "40px"
+            }}>Manage Past Orders</Typography>
             {orders.map(
-                order => {
+                (order, idx) => {
                     return <ExpansionPanel key={order.id} TransitionProps={{ unmountOnExit: true }}>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}

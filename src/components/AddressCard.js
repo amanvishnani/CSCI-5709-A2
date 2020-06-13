@@ -49,7 +49,7 @@ function AddressCard(props) {
                     <div className={classes.backDrop}>
                         <div className={classes.backDropButtons}>
                             <Button color="primary" onClick={()=> {props.onEdit && props.onEdit(props.address)}} variant="contained" style={{marginRight: "5px"}}>Edit</Button>
-                            <Button color="secondary" variant="contained">Delete</Button>
+                            <Button color="secondary" onClick={() => {props.onDelete && props.onDelete(props.address)}} variant="contained">Delete</Button>
                         </div>
                     </div>
                 }
