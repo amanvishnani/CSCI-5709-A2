@@ -12,6 +12,7 @@ import {
 import OrderSummary from './pages/OrderSummary/OrderSummary';
 import { OrderContext } from "./contexts/OrderContext";
 import Payment from './pages/Payment/Payment';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 function App() {
 
@@ -25,6 +26,9 @@ function App() {
           <Switch>
             <Router path="/payment">
               <Payment />
+            </Router>
+            <Router path="/user">
+              <UserProfile />
             </Router>
             <Route path="/quick-buy/:productId">
               <OrderSummary />

@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         textDecoration: "none",
         color: "white"
+    },
+    noDecoration: {
+        textDecoration: "none",
+        color: "white"
     }
 }))
 
@@ -27,22 +31,24 @@ function Header() {
         <div className={classes.root}>
             <AppBar position="static" color="primary">
                 <Toolbar>
-                    <Link to="/"  className={classes.title}>
+                    <Link to="/" className={classes.title}>
                         <Typography variant="h4">
                             Greenkart
                         </Typography>
                     </Link>
-                    <IconButton
-                        edge="end"
-                        aria-label="account of current user"
-                        aria-haspopup="true"
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                        <Typography variant="h6">
-                            Aman
-                        </Typography>
-                    </IconButton>
+                    <Link to="/user" className={classes.noDecoration}>
+                        <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-haspopup="true"
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                            <Typography variant="h6">
+                                Aman
+                            </Typography>
+                        </IconButton>
+                    </Link>
                 </Toolbar>
             </AppBar>
         </div>
