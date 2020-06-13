@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Grid } from '@material-ui/core'
 import { getAllOrders } from "../../service/OrderService";
-import { getAddressById } from "../../service/AddressService";
+import { getAddressById, getAllAddresses } from "../../service/AddressService";
 import PastOrders from '../../components/PastOrders';
 import UserGreetingsCard from "../../components/UserGreetingsCard";
 import UserNavSection from "../../components/UserNavSection";
+import ManageAddress from "../../components/ManageAddress"
+import { MANAGE_ADDRESS, PAST_ORDERS } from "../../other/NavStateEnum";
 // import PropTypes from 'prop-types'
 
 function UserProfile(props) {
 
-    const [orders, setOrders] = useState([]);
-    const [currentTab, setCurrentTab] = useState("PAST_ORDERS")
+    const [orders, setOrders] = useState(null);
+    const [addresses, setAddresses] = useState(null)
+    const [currentTab, setCurrentTab] = useState(PAST_ORDERS)
+    const [addressUpdated, setAddressUpdated] = useState(false)
 
     useEffect(() => {
-        async function Init() {
+        async function InitOrders() {
             let orders1 = await getAllOrders()
             for (const order of orders1) {
                 let addr = await getAddressById(order.addressId)
@@ -21,11 +25,27 @@ function UserProfile(props) {
             }
             setOrders(orders1);
         }
-        Init()
+        if(!orders && currentTab===PAST_ORDERS) {
+            InitOrders()
+        }
         return () => {
 
         }
-    })
+    }, [currentTab, orders])
+
+    useEffect(() => {
+        async function InitAddresses() {
+            let addresses = await getAllAddresses()
+            setAddresses(addresses);
+        }
+        if(addressUpdated || (!addresses && currentTab===MANAGE_ADDRESS)) {
+            InitAddresses();
+            setAddressUpdated(false)
+        }
+        return () => {
+            
+        }
+    }, [currentTab, addresses, addressUpdated])
 
     return (
         <div style={{ flex: 1, margin: "20px" }}>
@@ -33,11 +53,12 @@ function UserProfile(props) {
                 <Grid item xs={12} md={3}>
                     <UserGreetingsCard />
                     <div style={{ marginTop: "20px" }}>
-                        <UserNavSection selectedItem={currentTab} />
+                        <UserNavSection selectedItem={currentTab} navChange={(e)=>setCurrentTab(e)}/>
                     </div>
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    {currentTab === "PAST_ORDERS" && <PastOrders orders={orders} />}
+                    {currentTab === PAST_ORDERS && <PastOrders orders={orders} />}
+                    {currentTab === MANAGE_ADDRESS && <ManageAddress onAddressUpdate={()=>setAddressUpdated(true)} addresses={addresses} />}
                 </Grid>
             </Grid>
         </div>

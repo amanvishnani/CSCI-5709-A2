@@ -1,15 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Typography, CardContent, Card, CardActionArea } from "@material-ui/core";
+import { Typography, CardContent, Card, CardActionArea, Button } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    backDrop: {
+        zIndex: 100,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: "0", left: "0",
+    },
+    backDropButtons: {
+        marginTop: "50px",
+        height: "40px"
+    }
+})
 
 function AddressCard(props) {
     let selected = false;
+    const [showHover, setShowHover] = useState(false)
+
+    let classes = useStyles()
+
+
     if (props.selectedId === props.address.id) {
         selected = true;
     }
+
+    function handleHover() {
+        if (props.config && (props.config.edit || props.config.delete) && !showHover) {
+            setShowHover(true)
+        } else {
+            setShowHover(false);
+        }
+    }
+
+    function handleNotHover() {
+        setShowHover(false);
+    }
+
     return (
         <div style={selected ? { borderStyle: "dashed" } : {}}>
-            <Card>
+            <Card onMouseEnter={handleHover} onMouseLeave={handleNotHover} style={{ position: "relative" }}>
+                {
+                    showHover &&
+                    <div className={classes.backDrop}>
+                        <div className={classes.backDropButtons}>
+                            <Button color="primary" onClick={()=> {props.onEdit && props.onEdit(props.address)}} variant="contained" style={{marginRight: "5px"}}>Edit</Button>
+                            <Button color="secondary" variant="contained">Delete</Button>
+                        </div>
+                    </div>
+                }
                 <CardActionArea>
                     <CardContent>
                         <Typography variant="h6" align="left">{props.address.name}</Typography> <br />
@@ -33,7 +76,12 @@ AddressCard.propTypes = {
         mobile: PropTypes.string,
         street: PropTypes.string,
     }),
-    selected: PropTypes.bool
+    selected: PropTypes.bool,
+    config: PropTypes.shape({
+        edit: PropTypes.bool,
+        delete: PropTypes.bool
+    })
+
 }
 
 export default AddressCard

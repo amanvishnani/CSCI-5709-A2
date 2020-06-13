@@ -22,7 +22,29 @@ async function getAddressById(id) {
     return addresses[id];
 }
 
+function getNewId() {
+    let max = -1;
+    for(let addr of Object.values(addresses)) {
+        if(max < addr.id) {
+            max = addr.id
+        }
+    }
+    return max + 1;
+}
+
+async function saveOrUpdateAddress(address) {
+    if(!address.id) {
+        let id = getNewId()
+        address.id = getNewId();
+        addresses[id] = address;
+    } else {
+        addresses[address.id] = address;
+    }
+    return address;
+}
+
 export {
     getAllAddresses,
-    getAddressById
+    getAddressById,
+    saveOrUpdateAddress
 }

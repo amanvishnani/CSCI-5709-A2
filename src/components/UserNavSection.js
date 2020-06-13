@@ -7,26 +7,31 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import PropTypes from 'prop-types'
 
 function UserNavSection(props) {
+    function handleChange(selectedItem) {
+        if(props.navChange) {
+            props.navChange(selectedItem)
+        }
+    }
     return (
         <div>
             <Card>
                 <Hidden smDown>
                     <List>
-                        <ListItem button selected={props.selectedItem==="PAST_ORDERS"}>
+                        <ListItem button onClick={() => handleChange("PAST_ORDERS")} selected={props.selectedItem==="PAST_ORDERS"}>
                             <ListItemIcon>
                                 <LocalShippingIcon />
                             </ListItemIcon>
                             <ListItemText>Past Orders</ListItemText>
                         </ListItem>
                         <Divider />
-                        <ListItem button>
+                        <ListItem button onClick={() => handleChange("MANAGE_ADDRESS")} selected={props.selectedItem==="MANAGE_ADDRESS"}>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
                             <ListItemText>Manage Addresses</ListItemText>
                         </ListItem>
                         <Divider />
-                        <ListItem button>
+                        <ListItem button  onClick={() => handleChange("LOGOUT")} selected={props.selectedItem==="LOGOUT"}>
                             <ListItemIcon>
                                 <PowerSettingsNewIcon />
                             </ListItemIcon>
@@ -38,19 +43,19 @@ function UserNavSection(props) {
                     <Hidden mdUp>
                         <Grid container spacing={0}>
                             <Grid item xs={4}>
-                                <CardActionArea>
+                                <CardActionArea button onClick={() => handleChange("PAST_ORDERS")} selected={props.selectedItem==="PAST_ORDERS"}>
                                     <LocalShippingIcon />
                                     <Typography variant="body1">Past Order</Typography>
                                 </CardActionArea>
                             </Grid>
                             <Grid item xs={4}>
-                                <CardActionArea>
+                                <CardActionArea onClick={() => handleChange("MANAGE_ADDRESS")} selected={props.selectedItem==="MANAGE_ADDRESS"}>
                                     <HomeIcon />
                                     <Typography variant="body1">Addresses</Typography>
                                 </CardActionArea>
                             </Grid>
                             <Grid item xs={4}>
-                                <CardActionArea>
+                                <CardActionArea button  onClick={() => handleChange("LOGOUT")} selected={props.selectedItem==="LOGOUT"}>
                                     <PowerSettingsNewIcon />
                                     <Typography variant="body1">Logout</Typography>
                                 </CardActionArea>
