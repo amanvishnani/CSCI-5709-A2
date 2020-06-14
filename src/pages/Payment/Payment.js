@@ -157,7 +157,7 @@ function Payment(props) {
                                             validateFields(false, false, true)
                                         }}
                                         error={!fields.expiryDate.valid}
-                                        id="outlined-credit-card-field"
+                                        id="outlined-expiry-field"
                                         label="Expiry Date"
                                         helperText="Future Date in MMYY format."
                                         variant="outlined"

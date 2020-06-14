@@ -35,7 +35,6 @@ function OrderSummary(props) {
 
     async function loadDetails(id) {
         let product = await getProductById(id)
-        console.log("Details fetched")
         setProduct(product)
         setOrderSummary({
             total: parseFloat(product.salePrice.substr(1,))
@@ -51,7 +50,6 @@ function OrderSummary(props) {
         if (product.id === -1) {
             loadDetails(productId)
         }
-        console.log("Effect called")
         return () => {
             //@TODO
         }

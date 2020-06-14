@@ -6,13 +6,21 @@
 Greenkart is an e-commerce platform for Gardening Enthusiasts. The goal of this website is to provide this niche market a platform to buy and sell gardening products such as seeds, saplings, tools (like shovel), etc.
 
 ## Features Implimented
-1. Landing page with a section that displays offers on products.
+1. Landing page with a section that displays offers on products (Landing page requirement).
 2. Quick checkout (fast checkout, does not need perform 'add to cart' process) from offer section on landing page.
 3. Payment handeling using Credit Card feature. Validation on Card Number, CVV, and Expiry Date.
-4. User Management section. Contains Past Order details, Manage Address (Add, Edit, Delete) and logout button.
+4. User Management section. Contains Past Order details, Manage Address (Add, Edit, Delete) and logout button (User section requirement).
 
 * *Date Created*: 14 JUN 2020
 * *Last Modification Date*: 14 JUN 2020
+
+## Suggested Flow for testing
+
+1. Open Landing page
+2. Click "Quick Checkout" on product card
+3. Update number of items in "Quick Checkout" page, Select Suitable address, proceed to checkout
+4. Confirm Order Summary, add credit card details, and Click Pay Now.
+5. Go to User's section from top right corner. Explore Past Order, Manage Address and Logout sub sections.
 
 ## Authors
 
@@ -38,7 +46,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-To have a local copy of this assingment up and running on your local machine, you will first need to install Node.js 12.x and NPM packages for the project.
+To have a local copy of this assignment up and running on your local machine, you will first need to install Node.js 12.x and NPM packages for the project.
 
 See the following section for instructions on how to install packages.
 
@@ -57,21 +65,10 @@ yarn
 
 ```
 
-### Break down into end to end tests
+### Color Schemes
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+1. Primary - Green (#00CC66) - Representing Green in Greenkart
+2. Secondary - Orange (#F75C03) - Complimenting color
 
 
 ## Deployment
