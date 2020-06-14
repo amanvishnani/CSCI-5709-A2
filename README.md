@@ -1,10 +1,32 @@
+<!--- The following README.md sample file was adapted from https://gist.github.com/PurpleBooth/109311bb0361f32d87a2#file-readme-template-md by Gabriella Mosquera for academic use ---> 
+<!--- You may delete any comments in this sample README.md file. If needing to use as a .txt file then simply delete all comments, edit as needed, and save as a README.txt file --->
+
+# Assignment 2 (Greenkart Project) [Group 22]
+
+Greenkart is an e-commerce platform for Gardening Enthusiasts. The goal of this website is to provide this niche market a platform to buy and sell gardening products such as seeds, saplings, tools (like shovel), etc.
+
+## Features Implimented
+1. Landing page with a section that displays offers on products.
+2. Quick checkout (fast checkout, does not need perform 'add to cart' process) from offer section on landing page.
+3. Payment handeling using Credit Card feature. Validation on Card Number, CVV, and Expiry Date.
+4. User Management section. Contains Past Order details, Manage Address (Add, Edit, Delete) and logout button.
+
+* *Date Created*: 14 JUN 2020
+* *Last Modification Date*: 14 JUN 2020
+
+## Authors
+
+* [Aman Vishnani](aman.vishnani@dal.ca) - *(Front End React Dev)*
+
+## Getting Started
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn start` or `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,57 +34,136 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `yarn test`
+See deployment for notes on how to deploy the project on a live system.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `yarn build`
+To have a local copy of this assingment up and running on your local machine, you will first need to install Node.js 12.x and NPM packages for the project.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+See the following section for instructions on how to install packages.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Installing
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Install Node.js 
+2. Install NPM packages using following command
 
-### `yarn eject`
+```
+npm install
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+or
+```
+yarn 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Break down into end to end tests
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Explain what these tests test and why
 
-## Learn More
+```
+Give an example
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### And coding style tests
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Explain what these tests test and why
 
-### Code Splitting
+```
+Give an example
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
+## Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Following steps to deploy has been adapted from [Heroku's official blog post](https://blog.heroku.com/deploying-react-with-zero-configuration) for deployment.
+1. Clone repository
+2. Install heroku cli and login into your account
+3. run `heroku create -b https://github.com/mars/create-react-app-buildpack.git` in project root folder.
+4. run `git push heroku master`
+5. run `heroku open`
 
-### Making a Progressive Web App
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## Built With
 
-### Advanced Configuration
+<!--- Provide a list of the frameworks used to build this application, your list should include the name of the framework used, the url where the framework is available for download and what the framework was used for, see the example below --->
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+* [React Material UI](http://material-ui.com/) - The web framework used for styles and components
+* [Npm JS](https://www.npmjs.com/) - Package manager bundled with Node.js
+* [react-router-dom](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom) - Routing library for react
+* [create-react-app-buildpack](https://github.com/mars/create-react-app-buildpack#usage) - buildpack to deploy react to a heroku app.
 
-### Deployment
+## Sources Used
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+The code uses components from Material UI and router from `react-router-dom` hence is dependent on documentation of those library.
+Following code snippets were copied from **official** documentation to reflect consistant design patterns.
 
-### `yarn build` fails to minify
+### DISCLAIMER
+**Note**: Author attribution is not possible if a code snippet was used form an official documentation of any library. Docs are compiled and witten by many authors contributing using a chain of git commits. Hence, I'll be refering to documentation as the author(s) of the code.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### App.js
+
+*Lines 41 - 59*
+
+```
+<Router>
+    <OrderContext.Provider value={orderState}>
+    <Header />
+    <Switch>
+        <Router path="/user">
+        <UserProfile />
+        </Router>
+        <Router path="/payment">
+        <Payment />
+        </Router>
+        <Route path="/quick-buy/:productId">
+        <OrderSummary />
+        </Route>
+        <Route path="/">
+        <Landing />
+        </Route>
+    </Switch>
+    </OrderContext.Provider>
+</Router>
+
+```
+
+The code above was created by adapting the code in [React Router official Docs](https://reacttraining.com/react-router/web/guides/quick-start) as shown below: 
+
+```
+<Router>
+    <div>
+    <nav>
+        <ul>
+        <li>
+            <Link to="/">Home</Link>
+        </li>
+        <li>
+            <Link to="/about">About</Link>
+        </li>
+        <li>
+            <Link to="/users">Users</Link>
+        </li>
+        </ul>
+    </nav>
+
+    {/* A <Switch> looks through its children <Route>s and
+        renders the first one that matches the current URL. */}
+    <Switch>
+        <Route path="/about">
+        <About />
+        </Route>
+        <Route path="/users">
+        <Users />
+        </Route>
+        <Route path="/">
+        <Home />
+        </Route>
+    </Switch>
+    </div>
+</Router>
+```
+
+- The code in [React Router official Docs](https://reacttraining.com/react-router/web/guides/quick-start) was implemented by Open Source Contributers
+- [React Router official Docs](https://reacttraining.com/react-router/web/guides/quick-start)'s Code was used because knowledge of syntax for library usage is required in order to use it.
+- [React Router official Docs](https://reacttraining.com/react-router/web/guides/quick-start)'s Code was modified by changing the Router Path and components within the router tag.

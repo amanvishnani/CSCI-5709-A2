@@ -17,10 +17,14 @@ function Payment(props) {
         cvv: {
             value: '',
             valid: true
+        },
+        expiryDate: {
+            value: '',
+            valid: true
         }
     })
 
-    function validateFields(card, cvv) {
+    function validateFields(card, cvv, expiryDate) {
         let cardRegex = RegExp(/^(\d){4}([-\s]){0,1}(\d){4}([-\s]){0,1}(\d){4}([-\s]){0,1}(\d){4}/)
         if (card) {
             let state = { ...fields }
@@ -31,6 +35,19 @@ function Payment(props) {
         if (cvv) {
             let state = { ...fields }
             state.cvv.valid = cvvRegex.test(fields.cvv.value);
+            setFields(state)
+        }
+        let expDateRegex1 = /^0[1-9]{1}(\d){2}$/
+        let expDateRegex2 = /^1[1-2]{1}(\d){2}$/
+        if (expiryDate) {
+            let state = { ...fields }
+            let valid = expDateRegex1.test(fields.expiryDate.value) || expDateRegex2.test(fields.expiryDate.value);
+            if (valid) {
+                valid = valid & (parseInt(fields.expiryDate.value) % 100) >= 20;
+            } else {
+                valid = false;
+            }
+            state.expiryDate.valid = valid;
             setFields(state)
         }
     }
@@ -51,7 +68,7 @@ function Payment(props) {
 
     return (
         <div>
-            <Grid item xs={12} md={6} style={{margin: "10px auto"}}>
+            <Grid item xs={12} md={6} style={{ margin: "10px auto" }}>
                 <Stepper activeStep={activeStep} orientation="vertical">
                     <Step>
                         <StepLabel>Order Summary</StepLabel>
@@ -133,13 +150,29 @@ function Payment(props) {
                                         style={{ width: "100%", marginTop: "20px" }}
                                         value={fields.cvv.value}
                                     />
+                                    <br />
+                                    <TextField
+                                        onChange={(e) => {
+                                            fields.expiryDate.value = e.target.value
+                                            validateFields(false, false, true)
+                                        }}
+                                        error={!fields.expiryDate.valid}
+                                        id="outlined-credit-card-field"
+                                        label="Expiry Date"
+                                        helperText="Future Date in MMYY format."
+                                        variant="outlined"
+                                        style={{ width: "100%", marginTop: "20px" }}
+                                        value={fields.expiryDate.value}
+                                    />
                                     <Grid container style={{ marginTop: "20px" }}>
                                         <Grid item xs={6}>
                                             <Button color="secondary" variant="contained" onClick={() => setActiveStep(0)}>Back</Button>
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <Button disabled={!fields.creditCard.valid || !fields.cvv.valid || !fields.creditCard || !fields.cvv.value}
-                                                variant="contained" onClick={() => setActiveStep(2)}>Pay Now</Button>
+                                            <Button variant="contained" onClick={() => setActiveStep(2)}
+                                                disabled={!fields.creditCard.valid || !fields.cvv.valid || !fields.expiryDate.valid || !fields.creditCard || !fields.cvv.value || !fields.expiryDate.value}>
+                                                Pay Now
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                 </CardContent>
@@ -155,7 +188,7 @@ function Payment(props) {
                                 <CardMedia style={{ width: "200px" }}
                                     image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Green_tick.svg/1024px-Green_tick.svg.png" />
                                 <CardContent>
-                                        Check User Section on the top right corner for Order History
+                                    Check User Section on the top right corner for Order History
                                 </CardContent>
                             </Card>
                         </StepContent>
