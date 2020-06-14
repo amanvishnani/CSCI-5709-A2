@@ -5,6 +5,9 @@
 
 Greenkart is an e-commerce platform for Gardening Enthusiasts. The goal of this website is to provide this niche market a platform to buy and sell gardening products such as seeds, saplings, tools (like shovel), etc.
 
+## Hosting
+App can be accessed from this URL: [https://a2-csci5709.herokuapp.com/](https://a2-csci5709.herokuapp.com/)
+
 ## Features Implimented
 1. Landing page with a section that displays offers on products (Landing page requirement).
 2. Quick checkout (fast checkout, does not need perform 'add to cart' process) from offer section on landing page.
