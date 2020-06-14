@@ -9,11 +9,11 @@ import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    grow: {
         flexGrow: 1,
     },
     title: {
-        flexGrow: 1,
+        // flexGrow: 1,
         textDecoration: "none",
         color: "white"
     },
@@ -28,7 +28,7 @@ function Header() {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div className={classes.grow}>
             <AppBar position="static" color="primary">
                 <Toolbar>
                     <Link to="/" className={classes.title}>
@@ -36,6 +36,7 @@ function Header() {
                             Greenkart
                         </Typography>
                     </Link>
+                    <div className={classes.grow}></div>
                     <Link to="/user" className={classes.noDecoration}>
                         <IconButton
                             edge="end"

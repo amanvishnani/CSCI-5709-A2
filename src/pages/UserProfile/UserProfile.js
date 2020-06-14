@@ -6,7 +6,7 @@ import PastOrders from '../../components/PastOrders';
 import UserGreetingsCard from "../../components/UserGreetingsCard";
 import UserNavSection from "../../components/UserNavSection";
 import ManageAddress from "../../components/ManageAddress"
-import { MANAGE_ADDRESS, PAST_ORDERS } from "../../other/NavStateEnum";
+import { MANAGE_ADDRESS, PAST_ORDERS, LOGOUT } from "../../other/NavStateEnum";
 // import PropTypes from 'prop-types'
 
 function UserProfile(props) {
@@ -59,6 +59,7 @@ function UserProfile(props) {
                 <Grid item xs={12} md={8}>
                     {currentTab === PAST_ORDERS && <PastOrders orders={orders} />}
                     {currentTab === MANAGE_ADDRESS && <ManageAddress onAddressUpdate={()=>setAddressUpdated(true)} addresses={addresses} />}
+                    {currentTab === LOGOUT && "Session Will be logged out"}
                 </Grid>
             </Grid>
         </div>

@@ -2,17 +2,18 @@ import SummaryItem from "../../components/SummaryItem";
 import React, { useEffect, useState, useContext } from "react";
 import { getProductById } from "../../service/ProductService";
 import { getAllAddresses } from "../../service/AddressService";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import { Typography, Button, LinearProgress } from "@material-ui/core";
 import AddressCard from "../../components/AddressCard";
 import { OrderContext } from "../../contexts/OrderContext";
-
+import { useHistory } from "react-router-dom";
 
 function OrderSummary(props) {
 
     let { productId } = useParams()
+    let history = useHistory();
 
     const [product, setProduct] = useState({
         id: -1,
@@ -24,7 +25,6 @@ function OrderSummary(props) {
     })
     const [addresses, setAddresses] = useState([])
     const [selectedAddr, setSelectedAddr] = useState(-1)
-    const [redirect, setRedirect] = useState(null)
     const [loading, setLoading] = useState(false)
     const [orderSummary, setOrderSummary] = useState({
         productSummaries: [],
@@ -67,7 +67,7 @@ function OrderSummary(props) {
             orderSummary: orderSummary
         })
         setTimeout(() => {
-            setRedirect('/payment')
+            history.push('/payment')
         }, 1000);
     }
 
@@ -78,9 +78,6 @@ function OrderSummary(props) {
         })
     }
 
-    if (redirect) {
-        return <Redirect to={redirect} />
-    }
     return (
         <div>
             { loading && <LinearProgress color="secondary" />}

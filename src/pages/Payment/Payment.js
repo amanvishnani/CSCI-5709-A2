@@ -4,7 +4,6 @@ import { OrderContext } from '../../contexts/OrderContext'
 import { getAddressById } from '../../service/AddressService';
 import { Stepper, Step, StepLabel, StepContent, Button, Grid, TableContainer, Table, Paper, TableHead, TableRow, TableCell, TableBody, Typography, Card, CardContent, TextField, CardMedia } from '@material-ui/core';
 import AddressCard from '../../components/AddressCard';
-import { Link } from "react-router-dom";
 
 function Payment(props) {
     const { order } = useContext(OrderContext);
@@ -23,14 +22,14 @@ function Payment(props) {
 
     function validateFields(card, cvv) {
         let cardRegex = RegExp(/^(\d){4}([-\s]){0,1}(\d){4}([-\s]){0,1}(\d){4}([-\s]){0,1}(\d){4}/)
-        if(card) {
-            let state = {...fields}
+        if (card) {
+            let state = { ...fields }
             state.creditCard.valid = cardRegex.test(fields.creditCard.value);
             setFields(state)
         }
         let cvvRegex = RegExp(/^(\d){3,4}/)
-        if(cvv) {
-            let state = {...fields}
+        if (cvv) {
+            let state = { ...fields }
             state.cvv.valid = cvvRegex.test(fields.cvv.value);
             setFields(state)
         }
@@ -52,7 +51,7 @@ function Payment(props) {
 
     return (
         <div>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} style={{margin: "10px auto"}}>
                 <Stepper activeStep={activeStep} orientation="vertical">
                     <Step>
                         <StepLabel>Order Summary</StepLabel>
@@ -107,7 +106,7 @@ function Payment(props) {
                                 <CardContent>
                                     <Typography variant="h6">Enter Credit Card Details</Typography>
                                     <TextField
-                                        onChange={(e) => { 
+                                        onChange={(e) => {
                                             fields.creditCard.value = e.target.value
                                             validateFields(true, false)
                                         }}
@@ -116,7 +115,7 @@ function Payment(props) {
                                         label="Credit Card"
                                         helperText="Example 1111 1111 1111 1111."
                                         variant="outlined"
-                                        style={{width: "100%", marginTop: "20px"}}
+                                        style={{ width: "100%", marginTop: "20px" }}
                                         value={fields.creditCard.value}
                                     />
                                     <br />
@@ -131,16 +130,16 @@ function Payment(props) {
                                         helperText="3 or 4 digit at the back of yur card."
                                         variant="outlined"
                                         type="password"
-                                        style={{width: "100%", marginTop: "20px"}}
+                                        style={{ width: "100%", marginTop: "20px" }}
                                         value={fields.cvv.value}
                                     />
-                                    <Grid container style={{marginTop: "20px"}}>
+                                    <Grid container style={{ marginTop: "20px" }}>
                                         <Grid item xs={6}>
                                             <Button color="secondary" variant="contained" onClick={() => setActiveStep(0)}>Back</Button>
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Button disabled={!fields.creditCard.valid || !fields.cvv.valid || !fields.creditCard || !fields.cvv.value}
-                                             variant="contained" onClick={() => setActiveStep(2)}>Pay Now</Button>
+                                                variant="contained" onClick={() => setActiveStep(2)}>Pay Now</Button>
                                         </Grid>
                                     </Grid>
                                 </CardContent>
@@ -153,12 +152,10 @@ function Payment(props) {
                         <StepContent>
                             <Card>
                                 <Typography variant="h6">Payment Recieved</Typography>
-                                <CardMedia style={{width: "200px"}} 
-                                image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Green_tick.svg/1024px-Green_tick.svg.png"/>
+                                <CardMedia style={{ width: "200px" }}
+                                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Green_tick.svg/1024px-Green_tick.svg.png" />
                                 <CardContent>
-                                    <Typography>
-                                        Check <Link to="/user">User Section</Link> for Order History
-                                    </Typography>
+                                        Check User Section on the top right corner for Order History
                                 </CardContent>
                             </Card>
                         </StepContent>

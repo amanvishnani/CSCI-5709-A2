@@ -52,7 +52,7 @@ function UpdateAddressDialog(props) {
                     <DialogActions>
                         <Button disabled={!validMobile(address.mobile) || isEmpty(address.name) || isEmpty(address.street)}
                          color="primary" variant="contained" onClick={() => {props.onSave && props.onSave(address)}}>Save</Button>
-                        <Button color="secondary" variant="contained" onClick={() => {props.handleClose && props.handleClose()}}>Cancle</Button>
+                        <Button color="secondary" variant="contained" onClick={() => {props.handleClose && props.handleClose()}}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
             }

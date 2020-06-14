@@ -62,7 +62,7 @@ function OfferCard(props) {
             </CardActionArea>
             <CardActions>
                 <Link to={"/quick-buy/"+offerItem.id} style={{textDecorationLine: "none"}}>
-                    <Button size="small" color="primary" title="Easy one click checkout">
+                    <Button size="small" color="secondary" title="Easy one click checkout">
                         Quick buy for {offerItem.salePrice}
                     </Button>
                 </Link>
